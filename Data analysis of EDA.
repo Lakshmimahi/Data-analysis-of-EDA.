@@ -1,0 +1,51 @@
+# Importing necessary libraries
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load Titanic dataset (Assume you have the CSV file, you can download from Kaggle)
+url = 'https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv'  # You can replace this with your local path
+df = pd.read_csv(url)
+
+# Display basic information about the dataset
+print(df.info())
+print(df.describe())
+
+# Display the first few rows of the dataset
+print(df.head())
+
+# 1. Data Cleaning
+
+# Check for missing values in each column
+missing_data = df.isnull().sum()
+print("\nMissing Data:\n", missing_data)
+
+# Handle missing values
+# Example: Fill missing 'Age' with the median value, and 'Embarked' with the most frequent value (mode)
+df['Age'] = df['Age'].fillna(df['Age'].median())
+df['Embarked'] = df['Embarked'].fillna(df['Embarked'].mode()[0])
+
+# Drop rows with missing 'Cabin' as it's too sparse to fill
+df = df.drop(columns=['Cabin'])
+
+# 2. Exploratory Data Analysis (EDA)
+
+# Distribution of the 'Age' column
+plt.figure(figsize=(8, 6))
+sns.histplot(df['Age'], kde=True, bins=30, color='skyblue')
+plt.title('Age Distribution of Passengers')
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.show()
+
+# Gender distribution (Bar plot)
+plt.figure(figsize=(8, 6))
+sns.countplot(x='Sex', data=df, palette="Blues")
+plt.title('Gender Distribution of Passengers')
+plt.xlabel('Sex')
+plt.ylabel('Count')
+plt.show()
+
+# Survival rate by gender (Bar plot)
+plt.figure(fig
